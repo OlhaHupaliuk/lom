@@ -1,7 +1,6 @@
 const { Telegraf } = require("telegraf");
 const { checkForChanges } = require("./checkForChanges");
 const { connectDB } = require("./db");
-const cron = require("node-cron");
 require("dotenv").config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -50,15 +49,6 @@ bot.command("check", async (ctx) => {
     await notifyChanges();
     await ctx.reply("✅ Перевірка завершена");
   }
-});
-
-// Cron job for automatic checks every day at 10
-cron.schedule("0 10 * * *", async () => {
-  console.log("[Bot] Running scheduled check:", new Date().toLocaleString());
-  await notifyChanges();
-  console.log(
-    `[Bot] Scheduled parsing completed at ${new Date().toLocaleString()}`
-  );
 });
 
 bot.launch();
