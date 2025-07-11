@@ -63,4 +63,3 @@ cron.schedule("0 10 * * *", async () => {
 
 bot.launch();
 notifyChanges();
-bot.telegram.sendMessage(chatId, "✅ Бот успішно запущено");
