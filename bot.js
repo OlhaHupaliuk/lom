@@ -2,6 +2,7 @@ const { Telegraf } = require("telegraf");
 const { checkForChanges } = require("./checkForChanges");
 const { connectDB } = require("./db");
 require("dotenv").config();
+const cron = require("node-cron");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const chatId = process.env.CHAT_ID;
@@ -43,13 +44,18 @@ async function notifyChanges() {
   return { newItems };
 }
 
-// Manual check command
-bot.command("check", async (ctx) => {
-  if (ctx.chat.id.toString() === chatId) {
+cron.schedule("0 10 * * *", async () => {
+  console.log("Cron job started:", new Date().toLocaleString());
+  try {
     await notifyChanges();
-    await ctx.reply("✅ Перевірка завершена");
+  } catch (err) {
+    console.error("Error in cron job:", err);
   }
 });
 
+cron.schedule("0 10 * * *", () => {
+  console.log("Cron job started:", new Date().toLocaleString());
+  notifyChanges();
+});
+
 bot.launch();
-notifyChanges();
