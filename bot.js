@@ -48,7 +48,7 @@ async function notifyChanges() {
   return { newItems };
 }
 
-cron.schedule("0 10 * * *", async () => {
+cron.schedule("0 11 * * *", async () => {
   console.log("Cron job started:", new Date().toLocaleString());
   try {
     await notifyChanges();
