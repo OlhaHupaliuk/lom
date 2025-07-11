@@ -3,18 +3,20 @@ const { checkForChanges } = require("./checkForChanges");
 const { connectDB } = require("./db");
 require("dotenv").config();
 const cron = require("node-cron");
+const chatIds = process.env.CHAT_IDS.split(",");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const chatId = process.env.CHAT_ID;
 
-// Function to send message for a single product
 async function sendMessage(product) {
   console.log(`[Bot] Sending new product: ${product.title}`);
-  await bot.telegram.sendMessage(
-    chatId,
-    `🆕 Новий товар\n\n📦 ${product.title} (${product.model})\n💰 ${product.price}\n🔗 ${product.link}\n📍 ${product.location}`
-  );
-  await new Promise((resolve) => setTimeout(resolve, 1));
+  for (const id of chatIds) {
+    await bot.telegram.sendMessage(
+      id,
+      `🆕 Новий товар\n\n📦 ${product.title} (${product.model})\n💰 ${product.price}\n🔗 ${product.link}\n📍 ${product.location}`
+    );
+    await new Promise((resolve) => setTimeout(resolve, 1));
+  }
 }
 
 // Check for new products and notify
@@ -37,7 +39,9 @@ async function notifyChanges() {
 
   //   Send message if no new products
   if (newItems.length === 0) {
-    await bot.telegram.sendMessage(chatId, "ℹ️ Нових товарів не знайдено");
+    for (const id of chatIds) {
+      await bot.telegram.sendMessage(id, "ℹ️ Нових товарів не знайдено");
+    }
   }
 
   console.log(`[Bot] Found and sent ${newItems.length} new products`);
@@ -51,11 +55,6 @@ cron.schedule("0 10 * * *", async () => {
   } catch (err) {
     console.error("Error in cron job:", err);
   }
-});
-
-cron.schedule("0 10 * * *", () => {
-  console.log("Cron job started:", new Date().toLocaleString());
-  notifyChanges();
 });
 
 bot.launch();
