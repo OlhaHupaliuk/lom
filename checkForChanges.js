@@ -1,13 +1,5 @@
-const crypto = require("crypto");
 const { connectDB } = require("./db");
 const { fetchProducts } = require("./parser");
-
-function generateHash(product) {
-  return crypto
-    .createHash("md5")
-    .update(`${product.id}-${product.title}-${product.price}`)
-    .digest("hex");
-}
 
 async function checkForChanges() {
   console.log("[Check] Starting check for new products");
@@ -15,29 +7,22 @@ async function checkForChanges() {
   try {
     const collection = await connectDB();
 
-    // Завантажуємо лише останні 1000 товарів з бази
+    // Отримуємо всі існуючі id з колекції
     const existingItems = await collection
-      .find({})
-      .sort({ _id: -1 }) // найсвіжіші
-      .limit(1000)
+      .find({}, { projection: { id: 1 } })
       .toArray();
+    const existingIds = new Set(existingItems.map((item) => item.id));
 
-    const existingHashes = new Set(
-      existingItems.map((item) => generateHash(item))
-    );
-
-    const currentItems = await fetchProducts(); // тепер fetchProducts збирає тільки перші ~500 товарів
+    // Парсимо нові товари
+    const currentItems = await fetchProducts();
     console.log(`[Check] Fetched ${currentItems.length} current products`);
 
-    const newItems = [];
+    // Фільтруємо лише нові
+    const newItems = currentItems.filter((item) => !existingIds.has(item.id));
 
-    for (const item of currentItems) {
-      const hash = generateHash(item);
-      if (!existingHashes.has(hash)) {
-        newItems.push(item);
-        console.log(`[Check] New product: ${item.title}, ID: ${item.id}`);
-      }
-    }
+    newItems.forEach((item) =>
+      console.log(`[Check] New product: ${item.title}, ID: ${item.id}`)
+    );
 
     console.log(`[Check] Found ${newItems.length} new products`);
     return { newItems };

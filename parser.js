@@ -47,11 +47,9 @@ async function fetchProducts() {
             .find(".card-img-top")
             .css("background")
             ?.match(/url\(['"](.*?)['"]\)/)?.[1] || "No image";
-        const id =
-          $(el)
-            .find(".card-img-top")
-            .attr("wire:click")
-            ?.match(/{ id: (\d+) }/)?.[1] || `product-${pageNum}-${i}`;
+        const wireClickAttr = $(el).find(".card-img-top").attr("wire:click");
+        const id = wireClickAttr?.match(/id:\s*(\d+)/)?.[1];
+
         const link = `${baseUrl}?page=${pageNum}`;
         const location = $(el)
           .find(".card-body div[style*='font-size: 11px']")
