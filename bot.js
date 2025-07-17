@@ -124,3 +124,16 @@ bot
     console.error("[Bot] Failed to launch bot:", err.message);
     process.exit(1);
   });
+
+// Створення веб-сервера
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("🤖 Бот працює!");
+});
+
+app.listen(PORT, () => {
+  console.log(`[Server] Сервер запущено на порті ${PORT}`);
+});
