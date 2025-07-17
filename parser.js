@@ -4,7 +4,7 @@ const path = require("path");
 
 const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 10;
-const maxPages = 2000; // Максимальна кількість сторінок для перевірки
+const maxPages = 2000;
 
 async function fetchPage(pageNum, browser) {
   const url = `${baseUrl}?page=${pageNum}`;
