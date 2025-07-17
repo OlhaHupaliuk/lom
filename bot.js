@@ -1,7 +1,6 @@
 const { Telegraf } = require("telegraf");
-const { checkForChanges } = require("./checkForChanges");
-const { connectDB } = require("./db");
-const { fetchProducts } = require("./parser");
+const fs = require("fs").promises;
+const path = require("path");
 require("dotenv").config({ debug: true });
 
 const chatIds = process.env.CHAT_IDS ? process.env.CHAT_IDS.split(",") : [];
@@ -15,117 +14,80 @@ if (!chatIds.length) {
 
 const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 240000 });
 
-// Load all products into DB on startup
-async function loadAllProducts() {
-  console.log("[Bot] Starting to load all products into DB");
+async function sendMessage(product, chatId) {
   try {
-    const collection = await connectDB();
-    const products = await fetchProducts(); // Fetch up to 500
-    console.log(`[Bot] Fetched ${products.length} products from parser`);
+    await bot.telegram.sendPhoto(chatId, product.img, {
+      caption: `📦 ${product.title} (${product.model})\n💰 ${product.price}\n🔗 ${product.link}\n📍 ${product.location}`,
+    });
+    console.log(`[Bot] Message sent to chat ID: ${chatId}`);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  } catch (err) {
+    console.error(`[Bot] Error sending to chat ID ${chatId}:`, err.message);
+  }
+}
 
-    await collection.deleteMany({}); // Clear previous
-    for (const product of products) {
-      await collection.replaceOne({ id: product.id }, product, {
-        upsert: true,
-      });
+async function compareJsonFiles(file1, file2) {
+  try {
+    const data1 = JSON.parse(await fs.readFile(file1));
+    const data2 = JSON.parse(await fs.readFile(file2));
+
+    const ids1 = new Set(data1.map((item) => item.id));
+    const newItems = data2.filter((item) => !ids1.has(item.id));
+
+    console.log(`[Compare] Found ${newItems.length} new products`);
+
+    if (newItems.length > 0) {
+      const date = new Date().toISOString().slice(0, 10);
+      const outputFile = path.join(__dirname, `new_products_${date}.json`);
+      await fs.writeFile(outputFile, JSON.stringify(newItems, null, 2));
+      console.log(`[Compare] Saved new products to ${outputFile}`);
     }
 
-    console.log(
-      `[Bot] Successfully loaded ${products.length} products into DB`
-    );
+    return newItems;
   } catch (err) {
-    console.error("[Bot] Error in loadAllProducts:", err.message);
+    console.error("[Compare] Error:", err.message);
     throw err;
   }
 }
 
-// Send product message with delay
-async function sendMessage(product) {
-  console.log(`[Bot] Sending new product: ${product.title}, ID: ${product.id}`);
-  for (const id of chatIds) {
-    try {
-      await bot.telegram.sendPhoto(id, product.img, {
-        caption: `📦 ${product.title} (${product.model})\n💰 ${product.price}\n🔗 ${product.link}\n📍 ${product.location}`,
-      });
-      console.log(`[Bot] Message sent to chat ID: ${id}`);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay for Telegram API
-    } catch (err) {
-      console.error(
-        `[Bot] Error sending message to chat ID ${id}:`,
-        err.message
-      );
-    }
-  }
-}
-
-// Check for new products and notify
-async function notifyChanges() {
-  console.log("[Bot] Starting notifyChanges:", new Date().toLocaleString());
-  try {
-    const { newItems } = await checkForChanges();
-    console.log(`[Bot] Found ${newItems.length} new products to process`);
-    const collection = await connectDB();
-
-    for (const product of newItems) {
-      await collection.replaceOne({ id: product.id }, product, {
-        upsert: true,
-      });
-      await sendMessage(product);
-    }
-
-    // Auto-cleanup if >10 000 items
-    const total = await collection.countDocuments();
-    if (total > 10000) {
-      const excess = total - 10000;
-      const oldItems = await collection
-        .find({})
-        .sort({ _id: 1 })
-        .limit(excess)
-        .toArray();
-      const oldIds = oldItems.map((item) => item._id);
-      await collection.deleteMany({ _id: { $in: oldIds } });
-      console.log(`[Bot] Removed ${excess} old records to maintain DB size`);
-    }
-
-    for (const id of chatIds) {
-      const message =
-        newItems.length > 0
-          ? `📢 Нових товарів: ${newItems.length}`
-          : "ℹ️ Нових товарів не знайдено";
-      await bot.telegram.sendMessage(id, message);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-
-    console.log(`[Bot] Completed notifyChanges`);
-    return { newItems };
-  } catch (err) {
-    console.error("[Bot] Error in notifyChanges:", err.message);
-    throw err;
-  }
-}
-
-// /check command
 bot.command("check", async (ctx) => {
-  console.log(`[Bot] Received /check command from chat ID: ${ctx.chat.id}`);
-  if (!chatIds.includes(ctx.chat.id.toString())) {
-    await ctx.reply("⛔ Unauthorized access");
+  const chatId = ctx.chat.id.toString();
+  console.log(`[Bot] Received /check from chat ID: ${chatId}`);
+  if (!chatIds.includes(chatId)) {
+    await ctx.reply("⛔ Недоступно для цього чату");
     return;
   }
 
   let loadingMessage;
   try {
     loadingMessage = await ctx.reply("⏳ Зачекайте...");
-    await notifyChanges();
-    await ctx.telegram.deleteMessage(ctx.chat.id, loadingMessage.message_id);
-    await ctx.reply("✅ Перевірка завершена");
+    const date = new Date().toISOString().slice(0, 10);
+    const filePath = path.join(__dirname, `new_products_${date}.json`);
+
+    let newItems = [];
+    try {
+      newItems = JSON.parse(await fs.readFile(filePath));
+    } catch (err) {
+      console.error(`[Bot] Error reading ${filePath}:`, err.message);
+      await ctx.reply("⚠️ Нові товари не знайдено");
+      return;
+    }
+
+    if (newItems.length === 0) {
+      await ctx.reply("ℹ️ Нових товарів не знайдено");
+    } else {
+      for (const product of newItems) {
+        await sendMessage(product, chatId);
+      }
+      await ctx.reply(`📢 Нових товарів: ${newItems.length}`);
+    }
+
+    await ctx.telegram.deleteMessage(chatId, loadingMessage.message_id);
   } catch (err) {
     console.error("[Bot] Error in /check:", err.message);
     if (loadingMessage) {
       try {
-        await ctx.telegram.deleteMessage(
-          ctx.chat.id,
-          loadingMessage.message_id
-        );
+        await ctx.telegram.deleteMessage(chatId, loadingMessage.message_id);
       } catch (deleteErr) {
         console.error("[Bot] Can't delete loading message:", deleteErr.message);
       }
@@ -134,56 +96,53 @@ bot.command("check", async (ctx) => {
   }
 });
 
-// /stats command
-bot.command("stats", async (ctx) => {
+bot.command("compare", async (ctx) => {
+  const chatId = ctx.chat.id.toString();
+  if (!chatIds.includes(chatId)) {
+    await ctx.reply("⛔ Недоступно для цього чату");
+    return;
+  }
+
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const format = (d) => d.toISOString().slice(0, 10);
+  const file1 = `products_${format(yesterday)}.json`;
+  const file2 = `products_${format(today)}.json`;
+
+  let loadingMessage;
   try {
-    const collection = await connectDB();
-    const count = await collection.countDocuments();
-    await ctx.reply(`📦 Всього товарів у базі: ${count}`);
+    loadingMessage = await ctx.reply("⏳ Порівнюємо товари...");
+    const newItems = await compareJsonFiles(
+      path.join(__dirname, file1),
+      path.join(__dirname, file2)
+    );
+
+    if (newItems.length === 0) {
+      await ctx.reply("ℹ️ Нових товарів не знайдено");
+    } else {
+      await ctx.reply(`📢 Знайдено ${newItems.length} нових товарів`);
+    }
+
+    await ctx.telegram.deleteMessage(chatId, loadingMessage.message_id);
   } catch (err) {
-    console.error("[Bot] Error in /stats:", err.message);
-    await ctx.reply("⚠️ Не вдалося отримати статистику");
+    if (loadingMessage) {
+      await ctx.telegram
+        .deleteMessage(chatId, loadingMessage.message_id)
+        .catch(() => {});
+    }
+    await ctx.reply("❌ Помилка: " + err.message);
   }
 });
-
-// Errors
 bot.on("polling_error", (err) => {
   console.error("[Bot] Telegraf polling error:", err.message);
 });
 
-// Start bot
 bot
   .launch()
-  .then(async () => {
-    console.log("[Bot] Bot successfully launched");
-    await loadAllProducts();
-    console.log("[Bot] Initial product load completed");
-  })
+  .then(() => console.log("[Bot] Bot successfully launched"))
   .catch((err) => {
     console.error("[Bot] Failed to launch bot:", err.message);
     process.exit(1);
   });
-
-// Express server
-const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get("/", (req, res) => {
-  console.log("[Bot] Received request to root endpoint");
-  res.send("Bot is running");
-});
-app.get("/trigger", async (req, res) => {
-  try {
-    console.log("[Bot] /trigger endpoint called");
-    const { newItems } = await notifyChanges();
-    res.send(`✅ Done. Found ${newItems.length} new products`);
-  } catch (err) {
-    console.error("[Bot] Trigger error:", err.message);
-    res.status(500).send("❌ Error during trigger");
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`🌐 Express server listening on port ${PORT}`);
-});

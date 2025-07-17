@@ -1,104 +1,162 @@
-const axios = require("axios");
-const cheerio = require("cheerio");
+const puppeteer = require("puppeteer");
+const fs = require("fs").promises;
+const path = require("path");
 
-async function fetchProducts() {
-  const baseUrl = "https://lombard-centrall.com.ua/shop";
-  const products = [];
-  let page = 1;
-  const concurrentRequests = 5; // по 5 сторінок одночасно
-  const MAX_PRODUCTS = 500; // межа на кількість товарів
+const baseUrl = "https://lombard-centrall.com.ua/shop";
+const concurrentRequests = 10;
+const maxPages = 2000; // Максимальна кількість сторінок для перевірки
 
-  async function fetchPage(pageNum) {
-    const url = `${baseUrl}?page=${pageNum}`; // додано "?" перед page
-    console.log(`[Parser] Fetching page ${pageNum}: ${url}`);
-    try {
-      const res = await axios.get(url, {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-        },
-        timeout: 10000,
-      });
-      const $ = cheerio.load(res.data);
-      const productCards = $(".card.w-100");
-      const pageProducts = [];
+async function fetchPage(pageNum, browser) {
+  const url = `${baseUrl}?page=${pageNum}`;
+  console.log(`[Parser] Fetching page ${pageNum}: ${url}`);
+  const page = await browser.newPage();
+  try {
+    await page.setRequestInterception(true);
+    page.on("request", (req) => {
+      if (["image", "stylesheet", "font"].includes(req.resourceType())) {
+        req.abort();
+      } else {
+        req.continue();
+      }
+    });
 
-      productCards.each((i, el) => {
-        const title = $(el)
-          .find(".card-body div[style*='font-size: 16px']")
-          .text()
-          .trim();
-        const model = $(el)
-          .find(".card-body div[style*='font-size: 14px']")
-          .text()
-          .trim();
-        const category = $(el)
-          .find(".card-body div[style*='font-size: 12px']")
-          .first()
-          .text()
-          .trim();
-        const price = $(el)
-          .find(".card-body div:contains('грн')")
-          .first()
-          .text()
-          .trim();
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    );
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
+
+    await page
+      .waitForSelector(".card.w-100, h5", { timeout: 5000 })
+      .catch(() => {});
+
+    const noProducts = await page.evaluate(() => {
+      return document
+        .querySelector("h5")
+        ?.textContent.includes("Товарів не знайдено");
+    });
+    if (noProducts) {
+      console.log(`[Parser] No products found on page ${pageNum}`);
+      return { products: [], hasNextPage: false, pageNum };
+    }
+
+    const isNextDisabled = await page.evaluate(() => {
+      const nextButton = document.querySelector(
+        "li[aria-label='pagination.next']"
+      );
+      return (
+        nextButton?.classList.contains("disabled") ||
+        nextButton?.getAttribute("aria-disabled") === "true"
+      );
+    });
+
+    const pageProducts = await page.evaluate(() => {
+      const productCards = document.querySelectorAll(".card.w-100");
+      const products = [];
+
+      productCards.forEach((el) => {
+        const title = el
+          .querySelector(".card-body div[style*='font-size: 16px']")
+          ?.textContent.trim();
+        const model = el
+          .querySelector(".card-body div[style*='font-size: 14px']")
+          ?.textContent.trim();
+        const category = el
+          .querySelector(".card-body div[style*='font-size: 12px']")
+          ?.textContent.trim();
+        const price = el
+          .querySelector(
+            ".card-body .d-flex.justify-content-between div:first-child"
+          )
+          ?.textContent.trim();
         const img =
-          $(el)
-            .find(".card-img-top")
-            .css("background")
-            ?.match(/url\(['"](.*?)['"]\)/)?.[1] || "No image";
-        const wireClickAttr = $(el).find(".card-img-top").attr("wire:click");
+          el
+            .querySelector(".card-img-top")
+            ?.style.background?.match(/url\(['"](.*?)['"]\)/)?.[1] ||
+          "No image";
+        const wireClickAttr = el
+          .querySelector(".card-img-top")
+          ?.getAttribute("wire:click");
         const id = wireClickAttr?.match(/id:\s*(\d+)/)?.[1];
-
-        const link = `${baseUrl}?page=${pageNum}`;
-        const location = $(el)
-          .find(".card-body div[style*='font-size: 11px']")
-          .text()
-          .trim();
+        const location = el
+          .querySelector(".card-body div[style*='font-size: 11px']")
+          ?.textContent.trim();
 
         if (title && price && id) {
-          pageProducts.push({
-            id,
-            category,
-            title,
-            model,
-            price,
-            img,
-            link,
-            location,
-          });
+          products.push({ id, category, title, model, price, img, location });
         }
       });
 
-      return pageProducts;
-    } catch (error) {
-      console.error(`[Parser] Error fetching page ${pageNum}:`, error.message);
-      return [];
-    }
-  }
+      return products;
+    });
 
-  while (products.length < MAX_PRODUCTS) {
-    const pagePromises = Array.from({ length: concurrentRequests }, (_, i) =>
-      fetchPage(page + i)
-    );
     console.log(
-      `[Parser] Fetching ${concurrentRequests} pages concurrently starting from page ${page}`
+      `[Parser] Found ${pageProducts.length} products on page ${pageNum}`
+    );
+    await page.close();
+    return { products: pageProducts, hasNextPage: !isNextDisabled, pageNum };
+  } catch (error) {
+    console.error(`[Parser] Error fetching page ${pageNum}:`, error.message);
+    await page.close();
+    return { products: [], hasNextPage: false, pageNum };
+  }
+}
+
+async function fetchProducts() {
+  const products = [];
+  let page = 1;
+  let hasNextPage = true;
+  const browser = await puppeteer.launch({
+    headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
+  });
+
+  while (hasNextPage && page <= maxPages) {
+    const pagePromises = Array.from({ length: concurrentRequests }, (_, i) =>
+      page + i <= maxPages ? fetchPage(page + i, browser) : null
+    ).filter(Boolean);
+    console.log(
+      `[Parser] Fetching ${pagePromises.length} pages starting from ${page}`
     );
     const results = await Promise.all(pagePromises);
 
+    results.sort((a, b) => a.pageNum - b.pageNum);
+
+    let anyPageHasNext = false;
     for (const result of results) {
-      if (products.length >= MAX_PRODUCTS) break;
-      products.push(...result);
+      if (result.hasNextPage) {
+        anyPageHasNext = true;
+      }
+      result.products.forEach((product) => {
+        console.log(
+          `[Parser] Found product on page ${result.pageNum}: ${product.title}`
+        );
+      });
+      products.push(
+        ...result.products.map((product) => ({
+          ...product,
+          link: `${baseUrl}?page=${result.pageNum}`,
+        }))
+      );
     }
 
+    hasNextPage = anyPageHasNext;
     page += concurrentRequests;
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // затримка 1 сек
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
-  // Обрізаємо до 500 товарів, якщо більше набралося
-  const finalProducts = products.slice(0, MAX_PRODUCTS);
-  console.log(`[Parser] Collected ${finalProducts.length} products`);
-  return finalProducts;
+  await browser.close();
+
+  console.log(`[Parser] Collected ${products.length} products`);
+
+  const date = new Date().toISOString().slice(0, 10);
+  const filePath = path.join(__dirname, `products_${date}.json`);
+  await fs.writeFile(filePath, JSON.stringify(products, null, 2));
+  console.log(`[Parser] Saved to ${filePath}`);
+
+  return products;
 }
 
-module.exports = { fetchProducts };
+fetchProducts().catch((err) => {
+  console.error("[Parser] Fatal error:", err.message);
+  process.exit(1);
+});
