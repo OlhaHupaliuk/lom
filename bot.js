@@ -31,10 +31,10 @@ async function sendMessage(product, chatId) {
 bot.command("check", async (ctx) => {
   const chatId = ctx.chat.id.toString();
   console.log(`[Bot] Received /check from chat ID: ${chatId}`);
-  if (!chatIds.includes(chatId)) {
-    await ctx.reply("⛔ Недоступно для цього чату");
-    return;
-  }
+  // if (!chatIds.includes(chatId)) {
+  //   await ctx.reply("⛔ Недоступно для цього чату");
+  //   return;
+  // }
 
   let loadingMessage;
   try {
@@ -76,10 +76,10 @@ bot.command("check", async (ctx) => {
 
 bot.command("compare", async (ctx) => {
   const chatId = ctx.chat.id.toString();
-  if (!chatIds.includes(chatId)) {
-    await ctx.reply("⛔ Недоступно для цього чату");
-    return;
-  }
+  // if (!chatIds.includes(chatId)) {
+  //   await ctx.reply("⛔ Недоступно для цього чату");
+  //   return;
+  // }
 
   const today = new Date();
   const yesterday = new Date(today);
