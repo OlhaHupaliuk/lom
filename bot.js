@@ -1,6 +1,8 @@
 const { Telegraf } = require("telegraf");
 const fs = require("fs").promises;
 const path = require("path");
+const { compareJsonFiles } = require("./compare");
+
 require("dotenv").config({ debug: true });
 
 const chatIds = process.env.CHAT_IDS ? process.env.CHAT_IDS.split(",") : [];
@@ -23,30 +25,6 @@ async function sendMessage(product, chatId) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
   } catch (err) {
     console.error(`[Bot] Error sending to chat ID ${chatId}:`, err.message);
-  }
-}
-
-async function compareJsonFiles(file1, file2) {
-  try {
-    const data1 = JSON.parse(await fs.readFile(file1));
-    const data2 = JSON.parse(await fs.readFile(file2));
-
-    const ids1 = new Set(data1.map((item) => item.id));
-    const newItems = data2.filter((item) => !ids1.has(item.id));
-
-    console.log(`[Compare] Found ${newItems.length} new products`);
-
-    if (newItems.length > 0) {
-      const date = new Date().toISOString().slice(0, 10);
-      const outputFile = path.join(__dirname, `new_products_${date}.json`);
-      await fs.writeFile(outputFile, JSON.stringify(newItems, null, 2));
-      console.log(`[Compare] Saved new products to ${outputFile}`);
-    }
-
-    return newItems;
-  } catch (err) {
-    console.error("[Compare] Error:", err.message);
-    throw err;
   }
 }
 

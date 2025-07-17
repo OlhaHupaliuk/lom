@@ -25,14 +25,18 @@ async function compareJsonFiles(file1, file2) {
   }
 }
 
-// Example usage: node compare.js products_2025-07-16.json products_2025-07-17.json
-const [, , file1, file2] = process.argv;
-if (!file1 || !file2) {
-  console.error("[Compare] Please provide two JSON files to compare");
-  process.exit(1);
+// Якщо запущено напряму: node compare.js ...
+if (require.main === module) {
+  const [, , file1, file2] = process.argv;
+  if (!file1 || !file2) {
+    console.error("[Compare] Please provide two JSON files to compare");
+    process.exit(1);
+  }
+
+  compareJsonFiles(file1, file2).catch((err) => {
+    console.error("[Compare] Fatal error:", err.message);
+    process.exit(1);
+  });
 }
 
-compareJsonFiles(file1, file2).catch((err) => {
-  console.error("[Compare] Fatal error:", err.message);
-  process.exit(1);
-});
+module.exports = { compareJsonFiles };
