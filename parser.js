@@ -1,5 +1,5 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core"); // змінено
 const fs = require("fs").promises;
 const path = require("path");
 
@@ -8,6 +8,10 @@ const port = process.env.PORT || 3000;
 const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 10;
 const maxPages = 2000;
+
+// Використовуємо змінну середовища або Chromium, встановлений Puppeteer
+const executablePath =
+  process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/google-chrome-stable";
 
 async function fetchPage(pageNum, browser) {
   const url = `${baseUrl}?page=${pageNum}`;
@@ -108,18 +112,22 @@ async function fetchProducts() {
   const products = [];
   let page = 1;
   let hasNextPage = true;
+
   const browser = await puppeteer.launch({
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
+    executablePath, // додано
   });
 
   while (hasNextPage && page <= maxPages) {
     const pagePromises = Array.from({ length: concurrentRequests }, (_, i) =>
       page + i <= maxPages ? fetchPage(page + i, browser) : null
     ).filter(Boolean);
+
     console.log(
       `[Parser] Fetching ${pagePromises.length} pages starting from ${page}`
     );
+
     const results = await Promise.all(pagePromises);
 
     results.sort((a, b) => a.pageNum - b.pageNum);
@@ -173,7 +181,6 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-// Для локального тестування, якщо не викликається через HTTP
 if (process.env.NODE_ENV !== "production") {
   fetchProducts().catch((err) => {
     console.error("[Parser] Fatal error:", err.message);
