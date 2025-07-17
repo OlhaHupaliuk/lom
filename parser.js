@@ -1,7 +1,10 @@
+const express = require("express");
 const puppeteer = require("puppeteer");
 const fs = require("fs").promises;
 const path = require("path");
 
+const app = express();
+const port = process.env.PORT || 3000;
 const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 10;
 const maxPages = 2000;
@@ -156,7 +159,24 @@ async function fetchProducts() {
   return products;
 }
 
-fetchProducts().catch((err) => {
-  console.error("[Parser] Fatal error:", err.message);
-  process.exit(1);
+app.get("/run-script", async (req, res) => {
+  try {
+    const products = await fetchProducts();
+    res.json({ status: "success", products });
+  } catch (err) {
+    console.error("[Parser] Fatal error:", err.message);
+    res.status(500).json({ status: "error", message: err.message });
+  }
 });
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+// Для локального тестування, якщо не викликається через HTTP
+if (process.env.NODE_ENV !== "production") {
+  fetchProducts().catch((err) => {
+    console.error("[Parser] Fatal error:", err.message);
+    process.exit(1);
+  });
+}
