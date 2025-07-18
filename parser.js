@@ -1,5 +1,5 @@
 const express = require("express");
-const puppeteer = require("puppeteer-core"); // змінено
+const puppeteer = require("puppeteer"); // замість puppeteer-core
 const fs = require("fs").promises;
 const path = require("path");
 
@@ -10,8 +10,6 @@ const concurrentRequests = 10;
 const maxPages = 2000;
 
 // Використовуємо змінну середовища або Chromium, встановлений Puppeteer
-const executablePath =
-  process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/google-chrome-stable";
 
 async function fetchPage(pageNum, browser) {
   const url = `${baseUrl}?page=${pageNum}`;
@@ -116,7 +114,6 @@ async function fetchProducts() {
   const browser = await puppeteer.launch({
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
-    executablePath, // додано
   });
 
   while (hasNextPage && page <= maxPages) {

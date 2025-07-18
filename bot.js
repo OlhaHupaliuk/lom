@@ -19,10 +19,10 @@ const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 240000 });
 async function sendMessage(product, chatId) {
   try {
     await bot.telegram.sendPhoto(chatId, product.img, {
-      caption: `📦 ${product.title} (${product.model})\n💰 ${product.price}\n🔗 ${product.link}\n📍 ${product.location}`,
+      caption: `📦 ${product.title} (${product.model})\n💰 ${product.category}\n ${product.price}\n🔗 ${product.link}\n📍 ${product.location}`,
     });
     console.log(`[Bot] Message sent to chat ID: ${chatId}`);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 400));
   } catch (err) {
     console.error(`[Bot] Error sending to chat ID ${chatId}:`, err.message);
   }
@@ -31,11 +31,6 @@ async function sendMessage(product, chatId) {
 bot.command("check", async (ctx) => {
   const chatId = ctx.chat.id.toString();
   console.log(`[Bot] Received /check from chat ID: ${chatId}`);
-  // if (!chatIds.includes(chatId)) {
-  //   await ctx.reply("⛔ Недоступно для цього чату");
-  //   return;
-  // }
-
   let loadingMessage;
   try {
     loadingMessage = await ctx.reply("⏳ Зачекайте...");
@@ -76,10 +71,6 @@ bot.command("check", async (ctx) => {
 
 bot.command("compare", async (ctx) => {
   const chatId = ctx.chat.id.toString();
-  // if (!chatIds.includes(chatId)) {
-  //   await ctx.reply("⛔ Недоступно для цього чату");
-  //   return;
-  // }
 
   const today = new Date();
   const yesterday = new Date(today);
