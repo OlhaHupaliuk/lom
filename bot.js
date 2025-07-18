@@ -28,32 +28,33 @@ async function sendMessage(product, chatId) {
   }
 }
 
-const userAbortMap = new Map(); // Map для скасування
+const userAbortMap = new Map(); // Зберігає: chatId → active (true/false)
 
 bot.command("check", async (ctx) => {
   const chatId = ctx.chat.id.toString();
-  console.log(`[Bot] Received /check from chat ID: ${chatId}`);
-  userAbortMap.set(chatId, false); // дозволяємо відправку
+
+  if (userAbortMap.get(chatId) === true) {
+    await ctx.reply(
+      "⚠️ Ви вже виконуєте /check. Використайте /cancel для зупинки."
+    );
+    return;
+  }
+
+  userAbortMap.set(chatId, false); // Починаємо процес
 
   let loadingMessage;
   try {
-    loadingMessage = await ctx.reply("⏳ Зачекайте...", {
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: "❌ Скасувати", callback_data: "cancel_check" }],
-        ],
-      },
-    });
+    loadingMessage = await ctx.reply("⏳ Зачекайте...");
 
     const date = new Date().toISOString().slice(0, 10);
     const filePath = path.join(__dirname, `new_products_${date}.json`);
-    let newItems = [];
 
+    let newItems = [];
     try {
       newItems = JSON.parse(await fs.readFile(filePath));
     } catch (err) {
-      console.error(`[Bot] Error reading ${filePath}:`, err.message);
       await ctx.reply("⚠️ Нові товари не знайдено");
+      userAbortMap.delete(chatId);
       return;
     }
 
@@ -62,7 +63,7 @@ bot.command("check", async (ctx) => {
     } else {
       for (const product of newItems) {
         if (userAbortMap.get(chatId)) {
-          await ctx.reply("🚫 Надсилання скасовано.");
+          await ctx.reply("🚫 Надсилання скасовано командою /cancel.");
           break;
         }
         await sendMessage(product, chatId);
@@ -72,24 +73,30 @@ bot.command("check", async (ctx) => {
       }
     }
 
-    await ctx.telegram.deleteMessage(chatId, loadingMessage.message_id);
+    await ctx.telegram
+      .deleteMessage(chatId, loadingMessage.message_id)
+      .catch(() => {});
     userAbortMap.delete(chatId);
   } catch (err) {
     console.error("[Bot] Error in /check:", err.message);
     if (loadingMessage) {
-      try {
-        await ctx.telegram.deleteMessage(chatId, loadingMessage.message_id);
-      } catch {}
+      await ctx.telegram
+        .deleteMessage(chatId, loadingMessage.message_id)
+        .catch(() => {});
     }
     await ctx.reply("❌ Помилка: " + err.message);
     userAbortMap.delete(chatId);
   }
 });
 
-bot.action("cancel_check", async (ctx) => {
+bot.command("cancel", async (ctx) => {
   const chatId = ctx.chat.id.toString();
-  userAbortMap.set(chatId, true);
-  await ctx.answerCbQuery("Скасовано!");
+  if (userAbortMap.has(chatId) && userAbortMap.get(chatId) === false) {
+    userAbortMap.set(chatId, true);
+    await ctx.reply("✅ Надсилання буде зупинено.");
+  } else {
+    await ctx.reply("ℹ️ Нічого не виконується.");
+  }
 });
 
 bot.command("compare", async (ctx) => {
