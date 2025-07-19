@@ -22,7 +22,7 @@ async function sendMessage(product, chatId) {
       caption: `📦 ${product.title} (${product.model})\n💰 ${product.category}\n ${product.price}\n🔗 ${product.link}\n📍 ${product.location}`,
     });
     console.log(`[Bot] Message sent to chat ID: ${chatId}`);
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   } catch (err) {
     console.error(`[Bot] Error sending to chat ID ${chatId}:`, err.message);
   }
