@@ -2,7 +2,7 @@ const { Telegraf } = require("telegraf");
 const fs = require("fs").promises;
 const path = require("path");
 const { compareJsonFiles } = require("./compare");
-
+const { fetchProducts } = require("./parser");
 require("dotenv").config({ debug: true });
 
 const chatIds = process.env.CHAT_IDS ? process.env.CHAT_IDS.split(",") : [];
@@ -153,6 +153,25 @@ const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.send("🤖 Бот працює!");
+});
+
+app.get("/run-script", async (req, res) => {
+  try {
+    await fetchProducts();
+
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const format = (d) => d.toISOString().slice(0, 10);
+    const file1 = path.join(__dirname, `products_${format(yesterday)}.json`);
+    const file2 = path.join(__dirname, `products_${format(today)}.json`);
+    await compareJsonFiles(file1, file2);
+
+    res.send("✅ Парсинг і порівняння завершено");
+  } catch (err) {
+    console.error("[/run-script] Error:", err.message);
+    res.status(500).send("❌ Помилка: " + err.message);
+  }
 });
 
 app.listen(PORT, () => {
