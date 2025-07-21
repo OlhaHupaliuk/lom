@@ -2,7 +2,6 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const fs = require("fs").promises;
 const path = require("path");
-const { compareAndUpdateDb } = require("./dbHelper");
 const app = express();
 const port = process.env.PORT || 3000;
 const baseUrl = "https://lombard-centrall.com.ua/shop";
