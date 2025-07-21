@@ -1,8 +1,5 @@
 const express = require("express");
 const fs = require("fs").promises;
-const path = require("path");
-const app = express();
-const port = process.env.PORT || 3000;
 const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 10;
 const maxPages = 2000;
