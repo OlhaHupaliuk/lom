@@ -1,5 +1,4 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
 const fs = require("fs").promises;
 const path = require("path");
 const app = express();
@@ -7,6 +6,8 @@ const port = process.env.PORT || 3000;
 const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 10;
 const maxPages = 2000;
+const puppeteer = require("puppeteer-core");
+const path = require("path");
 
 async function fetchPage(pageNum, browser) {
   const url = `${baseUrl}?page=${pageNum}`;
@@ -85,9 +86,16 @@ async function fetchProducts() {
   let page = 1;
   let hasNextPage = true;
 
+  const chromiumPath = path.resolve(
+    __dirname,
+    "chromium",
+    "chrome-linux",
+    "chrome"
+  );
+
   const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: "/usr/bin/google-chrome", // Chrome, доступний на Render
+    headless: true,
+    executablePath: chromiumPath,
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
   });
   while (hasNextPage && page <= maxPages) {
