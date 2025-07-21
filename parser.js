@@ -131,24 +131,24 @@ async function fetchProducts() {
 
   return products;
 }
+module.exports = { fetchProducts };
+// app.get("/run-script", async (req, res) => {
+//   try {
+//     const products = await fetchProducts();
+//     res.json({ status: "success", products });
+//   } catch (err) {
+//     console.error("[Parser] Fatal error:", err.message);
+//     res.status(500).json({ status: "error", message: err.message });
+//   }
+// });
 
-app.get("/run-script", async (req, res) => {
-  try {
-    const products = await fetchProducts();
-    res.json({ status: "success", products });
-  } catch (err) {
-    console.error("[Parser] Fatal error:", err.message);
-    res.status(500).json({ status: "error", message: err.message });
-  }
-});
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`);
+// });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
-if (process.env.NODE_ENV !== "production") {
-  fetchProducts().catch((err) => {
-    console.error("[Parser] Fatal error:", err.message);
-    process.exit(1);
-  });
-}
+// if (process.env.NODE_ENV !== "production") {
+//   fetchProducts().catch((err) => {
+//     console.error("[Parser] Fatal error:", err.message);
+//     process.exit(1);
+//   });
+// }
