@@ -152,7 +152,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("🤖 Бот працює!");
+  res.json({ message: "🤖 Бот працює!" });
 });
 
 app.get("/run-script", async (req, res) => {
