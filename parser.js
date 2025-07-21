@@ -87,9 +87,9 @@ async function fetchProducts() {
 
   const browser = await puppeteer.launch({
     headless: "new",
+    executablePath: "/usr/bin/google-chrome", // Chrome, доступний на Render
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
   });
-
   while (hasNextPage && page <= maxPages) {
     const pagePromises = Array.from({ length: concurrentRequests }, (_, i) =>
       page + i <= maxPages ? fetchPage(page + i, browser) : null
