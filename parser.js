@@ -3,7 +3,7 @@ const fs = require("fs").promises;
 const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 10;
 const maxPages = 2000;
-const puppeteer = require("puppeteer-core");
+const puppeteer = require("puppeteer");
 const path = require("path");
 
 async function fetchPage(pageNum, browser) {
@@ -83,16 +83,15 @@ async function fetchProducts() {
   let page = 1;
   let hasNextPage = true;
 
-  const chromiumPath = path.resolve(
-    __dirname,
-    "chromium",
-    "chrome-linux",
-    "chrome"
-  );
+  // const chromiumPath = path.resolve(
+  //   __dirname,
+  //   "chromium",
+  //   "chrome-linux",
+  //   "chrome"
+  // );
 
   const browser = await puppeteer.launch({
-    headless: true,
-    executablePath: chromiumPath,
+    headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
   });
   while (hasNextPage && page <= maxPages) {
@@ -137,23 +136,27 @@ async function fetchProducts() {
   return products;
 }
 module.exports = { fetchProducts };
-// app.get("/run-script", async (req, res) => {
-//   try {
-//     const products = await fetchProducts();
-//     res.json({ status: "success", products });
-//   } catch (err) {
-//     console.error("[Parser] Fatal error:", err.message);
-//     res.status(500).json({ status: "error", message: err.message });
-//   }
-// });
+// Створення веб-сервера
+const app = express();
+const port = process.env.PORT || 3000;
 
-// app.listen(port, () => {
-//   console.log(`Server running on port ${port}`);
-// });
+app.get("/run-script", async (req, res) => {
+  try {
+    const products = await fetchProducts();
+    res.json({ status: "success", products });
+  } catch (err) {
+    console.error("[Parser] Fatal error:", err.message);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
 
-// if (process.env.NODE_ENV !== "production") {
-//   fetchProducts().catch((err) => {
-//     console.error("[Parser] Fatal error:", err.message);
-//     process.exit(1);
-//   });
-// }
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+if (process.env.NODE_ENV !== "production") {
+  fetchProducts().catch((err) => {
+    console.error("[Parser] Fatal error:", err.message);
+    process.exit(1);
+  });
+}
