@@ -138,6 +138,16 @@ bot.on("polling_error", (err) => {
   console.error("[Bot] Telegraf polling error:", err.message);
 });
 
+bot.command("startparser", async (ctx) => {
+  const url = "https://lombardbot-d2mp.onrender.com/run-script"; // 🔁 заміни на свій реальний домен
+
+  await ctx.reply("🔁 Натисніть кнопку нижче, щоб запустити парсинг:", {
+    reply_markup: {
+      inline_keyboard: [[{ text: "🚀 Запустити парсер", url: url }]],
+    },
+  });
+});
+
 bot
   .launch()
   .then(() => console.log("[Bot] Bot successfully launched"))
@@ -157,17 +167,9 @@ app.get("/", (req, res) => {
 
 app.get("/run-script", async (req, res) => {
   try {
-    await fetchProducts();
+    await fetchProducts(); // лишаємо тільки парсинг
 
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-    const format = (d) => d.toISOString().slice(0, 10);
-    const file1 = path.join(__dirname, `products_${format(yesterday)}.json`);
-    const file2 = path.join(__dirname, `products_${format(today)}.json`);
-    await compareJsonFiles(file1, file2);
-
-    res.send("✅ Парсинг і порівняння завершено");
+    res.send("✅ Парсинг завершено та збережено у файл з датою");
   } catch (err) {
     console.error("[/run-script] Error:", err.message);
     res.status(500).send("❌ Помилка: " + err.message);
