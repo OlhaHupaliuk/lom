@@ -14,7 +14,7 @@ if (!chatIds.length) {
   console.error("[Bot] Error: CHAT_IDS is not set or empty in .env");
 }
 
-const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 240000 });
+const bot = new Telegraf(process.env.BOT_TOKEN, { handlerTimeout: 1200000 });
 
 async function sendMessage(product, chatId) {
   try {
@@ -89,16 +89,6 @@ bot.command("check", async (ctx) => {
   }
 });
 
-bot.command("cancel", async (ctx) => {
-  const chatId = ctx.chat.id.toString();
-  if (userAbortMap.has(chatId) && userAbortMap.get(chatId) === false) {
-    userAbortMap.set(chatId, true);
-    await ctx.reply("✅ Надсилання буде зупинено.");
-  } else {
-    await ctx.reply("ℹ️ Нічого не виконується.");
-  }
-});
-
 bot.command("compare", async (ctx) => {
   const chatId = ctx.chat.id.toString();
 
@@ -139,13 +129,26 @@ bot.on("polling_error", (err) => {
 });
 
 bot.command("startparser", async (ctx) => {
-  const url = "https://lombardbot-d2mp.onrender.com/run-script"; // 🔁 заміни на свій реальний домен
-
   await ctx.reply("🔁 Натисніть кнопку нижче, щоб запустити парсинг:", {
     reply_markup: {
-      inline_keyboard: [[{ text: "🚀 Запустити парсер", url: url }]],
+      inline_keyboard: [
+        [{ text: "🚀 Запустити парсер", callback_data: "run_parser" }],
+      ],
     },
   });
+});
+
+bot.action("run_parser", async (ctx) => {
+  try {
+    await ctx.answerCbQuery("🔄 Запуск парсера...");
+    await ctx.reply("⏳ Парсинг почався, чекайте...");
+
+    await fetchProducts();
+
+    await ctx.reply("✅ Парсинг завершено, новий файл збережено.");
+  } catch (err) {
+    await ctx.reply("❌ Помилка під час парсингу: " + err.message);
+  }
 });
 
 bot
@@ -163,17 +166,6 @@ const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.json({ message: "🤖 Бот працює!" });
-});
-
-app.get("/run-script", async (req, res) => {
-  try {
-    await fetchProducts(); // лишаємо тільки парсинг
-
-    res.send("✅ Парсинг завершено та збережено у файл з датою");
-  } catch (err) {
-    console.error("[/run-script] Error:", err.message);
-    res.status(500).send("❌ Помилка: " + err.message);
-  }
 });
 
 app.listen(PORT, () => {
