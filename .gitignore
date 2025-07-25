@@ -1,2 +1,6 @@
 .env
 /node_modules
+chrome/
+chromium/
+.local-chromium/
+/chrome

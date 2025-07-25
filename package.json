@@ -7,10 +7,13 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "postinstall": "node install-chrome.js",
+    "postinstall": "echo Skipping Chromium download",
     "start": "node bot.js",
     "daily": "node parser.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "puppeteer": {
+    "skip_chromium_download": true
   },
   "dependencies": {
     "@puppeteer/browsers": "^2.10.6",
@@ -22,7 +25,7 @@
     "mongodb": "^6.17.0",
     "node-cron": "^4.2.1",
     "node-telegram-bot-api": "^0.66.0",
-    "puppeteer": "^24.14.0",
+    "puppeteer": "^24.15.0",
     "puppeteer-core": "^24.14.0",
     "telegraf": "^4.16.3"
   }
