@@ -1,3 +1,4 @@
+// parser.js
 const fs = require("fs").promises;
 const { executablePath } = require("puppeteer");
 const puppeteer = require("puppeteer");
@@ -5,21 +6,33 @@ const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 4;
 const maxPages = 1400;
 const path = require("path");
+const { connectDB } = require("./db");
+
+async function saveToDatabase(products, date) {
+  const collection = await connectDB();
+  const documents = products.map((product) => ({
+    ...product,
+    date,
+    timestamp: new Date(),
+  }));
+  await collection.deleteMany({ date }); // Clear old data for the same date
+  if (documents.length > 0) {
+    await collection.insertMany(documents);
+    console.log(`[DB] Saved ${documents.length} products for date ${date}`);
+  }
+}
 
 async function fetchPage(pageNum, browser, retries = 3) {
   const url = `${baseUrl}?page=${pageNum}`;
-
   for (let attempt = 1; attempt <= retries; attempt++) {
     const page = await browser.newPage();
     try {
       console.log(
         `[Parser] Attempt ${attempt} to fetch page ${pageNum}: ${url}`
       );
-
       await page.setUserAgent(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       );
-
       await page.setRequestInterception(true);
       page.on("request", (request) => {
         if (["image", "stylesheet", "font"].includes(request.resourceType())) {
@@ -28,20 +41,13 @@ async function fetchPage(pageNum, browser, retries = 3) {
           request.continue();
         }
       });
-
-      await page.goto(url, {
-        waitUntil: "networkidle2", // більш надійне очікування
-        timeout: 90000,
-      });
-
+      await page.goto(url, { waitUntil: "networkidle2", timeout: 90000 });
       console.log(`[Parser] Page ${pageNum} loaded successfully`);
-
       await page.waitForSelector(".card.w-100", { timeout: 40000 });
 
       const pageProducts = await page.evaluate(() => {
         const productCards = document.querySelectorAll(".card.w-100");
         const products = [];
-
         productCards.forEach((el) => {
           const title = el
             .querySelector(".card-body div[style*='font-size: 16px']")
@@ -60,12 +66,10 @@ async function fetchPage(pageNum, browser, retries = 3) {
           const location = el
             .querySelector(".card-body div[style*='font-size: 11px']")
             ?.textContent.trim();
-
           const id = el
             .querySelector("[wire\\:click]")
             ?.getAttribute("wire:click")
             ?.match(/id:\s*(\d+)/)?.[1];
-
           let img = "No image";
           const aTag = el.querySelector("a[data-fancybox]");
           if (aTag?.href) {
@@ -76,12 +80,10 @@ async function fetchPage(pageNum, browser, retries = 3) {
             const match = style.match(/url\(['"]?(.*?)['"]?\)/);
             if (match && match[1]) img = match[1];
           }
-
           if (title && price && id) {
             products.push({ id, category, title, model, price, img, location });
           }
         });
-
         return products;
       });
 
@@ -90,11 +92,7 @@ async function fetchPage(pageNum, browser, retries = 3) {
         return nextBtn?.classList.contains("disabled") || false;
       });
 
-      return {
-        products: pageProducts,
-        hasNextPage: !isNextDisabled,
-        pageNum,
-      };
+      return { products: pageProducts, hasNextPage: !isNextDisabled, pageNum };
     } catch (error) {
       console.error(
         `[Parser] Attempt ${attempt} failed for page ${pageNum}:`,
@@ -112,48 +110,36 @@ async function fetchPage(pageNum, browser, retries = 3) {
 }
 
 async function fetchProducts() {
-  const products = [];
+  const date = new Date().toISOString().slice(0, 10);
   let page = 1;
   let hasNextPage = true;
-  console.log("🟡 Запускаємо браузер…");
-
-  console.log("🔍 Шлях до Chrome:", executablePath());
-
+  console.log("🟡 Launching browser…");
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath: puppeteer.executablePath(), // ⬅️ автоматично візьме з кешу
+    executablePath: puppeteer.executablePath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
-
-  console.log("[Puppeteer] Executable path:", puppeteer.executablePath());
 
   while (hasNextPage && page <= maxPages) {
     const pagePromises = Array.from({ length: concurrentRequests }, (_, i) =>
       page + i <= maxPages ? fetchPage(page + i, browser) : null
     ).filter(Boolean);
-
     console.log(
       `[Parser] Fetching ${pagePromises.length} pages starting from ${page}`
     );
-
     const results = await Promise.all(pagePromises);
     results.sort((a, b) => a.pageNum - b.pageNum);
-
     hasNextPage = false;
 
     for (const result of results) {
       if (result.hasNextPage) hasNextPage = true;
-
-      result.products.forEach((product) => {
-        console.log(`[Parser] Page ${result.pageNum}: ${product.title}`);
-      });
-
-      products.push(
-        ...result.products.map((product) => ({
-          ...product,
+      if (result.products.length > 0) {
+        const productsWithLink = result.products.map((p) => ({
+          ...p,
           link: `${baseUrl}?page=${result.pageNum}`,
-        }))
-      );
+        }));
+        await saveToDatabase(productsWithLink, date); // Save per page
+      }
     }
 
     page += concurrentRequests;
@@ -161,39 +147,8 @@ async function fetchProducts() {
   }
 
   await browser.close();
-
-  const date = new Date().toISOString().slice(0, 10);
-  const filePath = path.join(__dirname, `products_${date}.json`);
-  await fs
-    .writeFile(filePath, JSON.stringify(products, null, 2))
-    .catch(() => {});
-  console.log(`[Parser] Saved ${products.length} products to ${filePath}`);
-
-  return products;
+  console.log(`[Parser] Parsing completed for ${date}`);
+  return { date }; // Return minimal data
 }
 
 module.exports = { fetchProducts };
-
-// const app = express();
-// const port = process.env.PORT || 3000;
-
-// app.get("/run-script", async (req, res) => {
-//   try {
-//     const products = await fetchProducts();
-//     res.json({ status: "success", products });
-//   } catch (err) {
-//     console.error("[Parser] Fatal error:", err.message);
-//     res.status(500).json({ status: "error", message: err.message });
-//   }
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server running on port ${port}`);
-// });
-
-// if (process.env.NODE_ENV !== "production") {
-//   fetchProducts().catch((err) => {
-//     console.error("[Parser] Fatal error:", err.message);
-//     process.exit(1);
-//   });
-// }
