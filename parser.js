@@ -1,5 +1,5 @@
-const express = require("express");
 const fs = require("fs").promises;
+const { executablePath } = require("puppeteer");
 const puppeteer = require("puppeteer");
 const baseUrl = "https://lombard-centrall.com.ua/shop";
 const concurrentRequests = 10;
@@ -108,6 +108,9 @@ async function fetchProducts() {
   const products = [];
   let page = 1;
   let hasNextPage = true;
+  console.log("🟡 Запускаємо браузер…");
+
+  console.log("🔍 Шлях до Chrome:", executablePath());
 
   const browser = await puppeteer.launch({
     headless: "new",
