@@ -114,15 +114,10 @@ async function fetchProducts() {
 
   const browser = await puppeteer.launch({
     headless: "new",
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-gpu",
-      "--disable-dev-shm-usage",
-      "--window-size=1920,1080",
-    ],
-    protocolTimeout: 60000,
+    executablePath: puppeteer.executablePath(), // ⬅️ автоматично візьме з кешу
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
+
   console.log("[Puppeteer] Executable path:", puppeteer.executablePath());
 
   while (hasNextPage && page <= maxPages) {
