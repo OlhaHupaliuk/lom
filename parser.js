@@ -104,24 +104,23 @@ async function fetchPage(pageNum, browser, retries = 3) {
   }
 }
 
-async function fetchProducts(cancelParser) {
+async function fetchProducts() {
   const products = [];
   let page = 1;
   let hasNextPage = true;
 
   const browser = await puppeteer.launch({
     headless: "new",
-    executablePath: "/usr/bin/chromium-browser",
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-gpu",
       "--disable-dev-shm-usage",
-      "--enable-automation=false",
       "--window-size=1920,1080",
     ],
     protocolTimeout: 60000,
   });
+  console.log("[Puppeteer] Executable path:", puppeteer.executablePath());
 
   while (hasNextPage && page <= maxPages) {
     const pagePromises = Array.from({ length: concurrentRequests }, (_, i) =>

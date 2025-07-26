@@ -4,3 +4,5 @@ chrome/
 chromium/
 .local-chromium/
 /chrome
+/node_modules
+/.local-chromium
