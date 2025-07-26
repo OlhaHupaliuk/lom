@@ -2,22 +2,24 @@ const fs = require("fs").promises;
 const { executablePath } = require("puppeteer");
 const puppeteer = require("puppeteer");
 const baseUrl = "https://lombard-centrall.com.ua/shop";
-const concurrentRequests = 10;
+const concurrentRequests = 4;
 const maxPages = 1400;
 const path = require("path");
 
 async function fetchPage(pageNum, browser, retries = 3) {
   const url = `${baseUrl}?page=${pageNum}`;
-  const page = await browser.newPage();
 
   for (let attempt = 1; attempt <= retries; attempt++) {
+    const page = await browser.newPage();
     try {
       console.log(
         `[Parser] Attempt ${attempt} to fetch page ${pageNum}: ${url}`
       );
+
       await page.setUserAgent(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       );
+
       await page.setRequestInterception(true);
       page.on("request", (request) => {
         if (["image", "stylesheet", "font"].includes(request.resourceType())) {
@@ -27,9 +29,14 @@ async function fetchPage(pageNum, browser, retries = 3) {
         }
       });
 
-      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
+      await page.goto(url, {
+        waitUntil: "networkidle2", // більш надійне очікування
+        timeout: 90000,
+      });
+
       console.log(`[Parser] Page ${pageNum} loaded successfully`);
-      await page.waitForSelector(".card.w-100", { timeout: 20000 });
+
+      await page.waitForSelector(".card.w-100", { timeout: 40000 });
 
       const pageProducts = await page.evaluate(() => {
         const productCards = document.querySelectorAll(".card.w-100");
