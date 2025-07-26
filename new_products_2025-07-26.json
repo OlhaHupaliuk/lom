@@ -1,0 +1,632 @@
+[
+  {
+    "id": "27866",
+    "category": "Телефон",
+    "title": "apple",
+    "model": "iPhone 11 Pro Max 256GB",
+    "price": "18000 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/leXP4RYFSRPtAdFKCMMY7fQqGumw3s22.webp",
+    "location": "Одеса, вул. Рішельєвська, б. 78, приміщення 501",
+    "link": "https://lombard-centrall.com.ua/shop?page=1"
+  },
+  {
+    "id": "3955462",
+    "category": "Ноутбук",
+    "title": "Lenovo",
+    "model": "Intel Core i5-6440\\ 16 Gb",
+    "price": "4900 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Київ, вул. Світлицького, буд. 30/20А",
+    "link": "https://lombard-centrall.com.ua/shop?page=22"
+  },
+  {
+    "id": "3963463",
+    "category": "Телефон",
+    "title": "Poco (Xiaomi)",
+    "model": "X4 Pro5G 8/256 Gb",
+    "price": "4600 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=23"
+  },
+  {
+    "id": "1570621",
+    "category": "ТВ",
+    "title": "ERGO",
+    "model": "32GFS6500",
+    "price": "4500 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Болград, пр-т Соборний, буд. 118 ( р-н \"Центральний Ринок\", \"Фонтан\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=23"
+  },
+  {
+    "id": "3963462",
+    "category": "Телефон",
+    "title": "Poco (Xiaomi)",
+    "model": "F4 GT 8/128gb",
+    "price": "4400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=26"
+  },
+  {
+    "id": "28508",
+    "category": "Телефон",
+    "title": "Oppo",
+    "model": "Reno 5 5G 8/128GB (CPH214",
+    "price": "4400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Героїв Майдану, буд. 82",
+    "link": "https://lombard-centrall.com.ua/shop?page=26"
+  },
+  {
+    "id": "22409",
+    "category": "Планшет",
+    "title": "Lenovo",
+    "model": "Tab M10 (3rd Gen) TB328FU",
+    "price": "4100 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Дніпро (Дніпропетровськ), пр. Слобожанський,1",
+    "link": "https://lombard-centrall.com.ua/shop?page=28"
+  },
+  {
+    "id": "3955362",
+    "category": "Ноутбук",
+    "title": "HP",
+    "model": "AMD Atlon Silver 3050U/RA",
+    "price": "3400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Київ, вул. Світлицького, буд. 30/20А",
+    "link": "https://lombard-centrall.com.ua/shop?page=41"
+  },
+  {
+    "id": "3950362",
+    "category": "Мийка високого тиску",
+    "title": "INTERTOOL",
+    "model": "DT-1514",
+    "price": "3350 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=41"
+  },
+  {
+    "id": "3950363",
+    "category": "Мийка високого тиску",
+    "title": "INTERTOOL",
+    "model": "DT-1514",
+    "price": "3350 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, пр.Шахтобудівників,6 (біля \"Аптекі Низьких Цін\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=41"
+  },
+  {
+    "id": "3957063",
+    "category": "Планшет",
+    "title": "Lenovo",
+    "model": "Tab M10 Plus",
+    "price": "2999 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=50"
+  },
+  {
+    "id": "3957064",
+    "category": "Планшет",
+    "title": "Lenovo",
+    "model": "Tab M10 Plus",
+    "price": "2999 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=50"
+  },
+  {
+    "id": "3957162",
+    "category": "Планшет",
+    "title": "Realme",
+    "model": "Pad 10.4\" 3/32Gb WIFI (RM",
+    "price": "2900 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=52"
+  },
+  {
+    "id": "3957062",
+    "category": "Планшет",
+    "title": "Lenovo",
+    "model": "Tab M10 HD 2/32",
+    "price": "2600 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=59"
+  },
+  {
+    "id": "3951563",
+    "category": "М'ясорубка",
+    "title": "Rainberg",
+    "model": "RB-672",
+    "price": "2150 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=80"
+  },
+  {
+    "id": "3956763",
+    "category": "Пилосос будівельний",
+    "title": "INTERTOOL",
+    "model": "DT-1020",
+    "price": "2150 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=80"
+  },
+  {
+    "id": "3935162",
+    "category": "Аерогриль-фритюрниця",
+    "title": "Crownberg",
+    "model": "СВ-5543",
+    "price": "2000 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=93"
+  },
+  {
+    "id": "3956662",
+    "category": "Пилосос",
+    "title": "Rainberg",
+    "model": "RB-652 B",
+    "price": "2000 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/UBlEjDpz8lczSiugGpU5srWJjb5XjX4X.webp",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=93"
+  },
+  {
+    "id": "3940862",
+    "category": "Дриль шуруповерт акумуляторний",
+    "title": "INTERTOOL",
+    "model": "WT-0313",
+    "price": "1900 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=100"
+  },
+  {
+    "id": "3951562",
+    "category": "М'ясорубка",
+    "title": "Rainberg",
+    "model": "RB-671",
+    "price": "1600 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/OgcB8UhMPwMskFtECoy55jdKyWLytlzh.webp",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=119"
+  },
+  {
+    "id": "3956762",
+    "category": "Пилосос акумуляторний",
+    "title": "Crownberg",
+    "model": "СВ-677",
+    "price": "1350 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=154"
+  },
+  {
+    "id": "3938663",
+    "category": "Відпарювач",
+    "title": "Rainberg",
+    "model": "RB-2256",
+    "price": "950 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=221"
+  },
+  {
+    "id": "3938664",
+    "category": "Відпарювач",
+    "title": "Rainberg",
+    "model": "RB-2256",
+    "price": "950 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=221"
+  },
+  {
+    "id": "3947062",
+    "category": "Комплект підставок під машину",
+    "title": "INTERTOOL",
+    "model": "GT0400",
+    "price": "950 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=225"
+  },
+  {
+    "id": "3936862",
+    "category": "Блендер",
+    "title": "Rainberg",
+    "model": "RB-6211",
+    "price": "900 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Одеса, вул. Фонтанська дорога  61 прим. 515",
+    "link": "https://lombard-centrall.com.ua/shop?page=231"
+  },
+  {
+    "id": "3965962",
+    "category": "Фен-щітка",
+    "title": "VGR",
+    "model": "V-494",
+    "price": "750 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/6CKqGfsy5BtP7cTUhydWAhT01rUfaIyh.webp",
+    "location": "Павлоград, пр.Шахтобудівників,6 (біля \"Аптекі Низьких Цін\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=287"
+  },
+  {
+    "id": "3958862",
+    "category": "Быт. техника, эллектроника",
+    "title": "Інший бренд",
+    "model": "***",
+    "price": "750 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Київ, вул. Світлицького, буд. 30/20А",
+    "link": "https://lombard-centrall.com.ua/shop?page=288"
+  },
+  {
+    "id": "3959964",
+    "category": "Праска",
+    "title": "Rainberg",
+    "model": "RB-6307",
+    "price": "700 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=328"
+  },
+  {
+    "id": "3959965",
+    "category": "Праска",
+    "title": "Rainberg",
+    "model": "RB-6307",
+    "price": "700 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, пр.Шахтобудівників,6 (біля \"Аптекі Низьких Цін\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=328"
+  },
+  {
+    "id": "3958863",
+    "category": "Быт. техника, эллектроника",
+    "title": "Інший бренд",
+    "model": "***",
+    "price": "650 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Київ, вул. Світлицького, буд. 30/20А",
+    "link": "https://lombard-centrall.com.ua/shop?page=343"
+  },
+  {
+    "id": "3958864",
+    "category": "Быт. техника, эллектроника",
+    "title": "Інший бренд",
+    "model": "***",
+    "price": "600 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Київ, вул. Світлицького, буд. 30/20А",
+    "link": "https://lombard-centrall.com.ua/shop?page=379"
+  },
+  {
+    "id": "3959062",
+    "category": "Подрібнювач",
+    "title": "Rainberg",
+    "model": "RB-2201",
+    "price": "600 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Героїв Майдану, буд. 82",
+    "link": "https://lombard-centrall.com.ua/shop?page=380"
+  },
+  {
+    "id": "3959063",
+    "category": "Подрібнювач",
+    "title": "Rainberg",
+    "model": "RB-2201",
+    "price": "600 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=380"
+  },
+  {
+    "id": "3959962",
+    "category": "Праска",
+    "title": "RAF",
+    "model": "R-1234G",
+    "price": "570 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=389"
+  },
+  {
+    "id": "3959963",
+    "category": "Праска",
+    "title": "RAF",
+    "model": "R-1234G",
+    "price": "570 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Одеса, вул. Фонтанська дорога  61 прим. 515",
+    "link": "https://lombard-centrall.com.ua/shop?page=389"
+  },
+  {
+    "id": "3949362",
+    "category": "Машинка для стрижки",
+    "title": "Geemy",
+    "model": "GM-592",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=396"
+  },
+  {
+    "id": "3938665",
+    "category": "Відпарювач",
+    "title": "Rainberg",
+    "model": "RB-6315",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=405"
+  },
+  {
+    "id": "3959966",
+    "category": "Праска",
+    "title": "Rainberg",
+    "model": "RB-6308",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/oOeeHy0PS5Co2wfSg86e0G0cs4zQfUqt.webp",
+    "location": "Одеса, вул. Фонтанська дорога  61 прим. 515",
+    "link": "https://lombard-centrall.com.ua/shop?page=413"
+  },
+  {
+    "id": "3959967",
+    "category": "Праска",
+    "title": "Rainberg",
+    "model": "RB-6308",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/oOeeHy0PS5Co2wfSg86e0G0cs4zQfUqt.webp",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=413"
+  },
+  {
+    "id": "3959968",
+    "category": "Праска",
+    "title": "Rainberg",
+    "model": "RB-6308",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/oOeeHy0PS5Co2wfSg86e0G0cs4zQfUqt.webp",
+    "location": "Павлоград, пр.Шахтобудівників,6 (біля \"Аптекі Низьких Цін\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=413"
+  },
+  {
+    "id": "3959969",
+    "category": "Праска",
+    "title": "Rainberg",
+    "model": "RB-6308",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/oOeeHy0PS5Co2wfSg86e0G0cs4zQfUqt.webp",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=413"
+  },
+  {
+    "id": "3940562",
+    "category": "Дрели и шуруповерты",
+    "title": "Craft",
+    "model": "CED 500",
+    "price": "500 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Київ, вул. Світлицького, буд. 30/20А",
+    "link": "https://lombard-centrall.com.ua/shop?page=462"
+  },
+  {
+    "id": "3938662",
+    "category": "Відпарювач",
+    "title": "Mini Steam Iron",
+    "model": "HT-558B",
+    "price": "450 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/0Iz32fjjgUhVIgGUYSuAI8TYqJ6XlZrD.webp",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=500"
+  },
+  {
+    "id": "3941162",
+    "category": "Електробритва",
+    "title": "GEMEI",
+    "model": "GM-7090",
+    "price": "400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/GAq5gOFgiOKThR7JeqjL7xW0D0mwdtak.webp",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=564"
+  },
+  {
+    "id": "3941762",
+    "category": "Електрочайник",
+    "title": "Crownberg",
+    "model": "CB-2845",
+    "price": "400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/kRWsl4Ermg6MjcxgxD0pUk9zzjCda3C9.webp",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=564"
+  },
+  {
+    "id": "3942262",
+    "category": "Аккумулятор Портативный",
+    "title": "Інший бренд",
+    "model": "до 20000 mAh",
+    "price": "400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Київ, вул. Світлицького, буд. 30/20А",
+    "link": "https://lombard-centrall.com.ua/shop?page=574"
+  },
+  {
+    "id": "3952262",
+    "category": "Набір інструментів",
+    "title": "INTERTOOL",
+    "model": "ET-6036SP",
+    "price": "350 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/WL69lItO5NexHphvnhXOqV0pSVwRjDjr.webp",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=627"
+  },
+  {
+    "id": "3957762",
+    "category": "Плойка конусна",
+    "title": "Geemy",
+    "model": "GM-2914",
+    "price": "330 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/whAVY0zxJv09h5SLi6W8HJ3x62ppyQcn.webp",
+    "location": "Одеса, вул. Фонтанська дорога  61 прим. 515",
+    "link": "https://lombard-centrall.com.ua/shop?page=649"
+  },
+  {
+    "id": "3942062",
+    "category": "Електрочайник",
+    "title": "Rainberg",
+    "model": "RB-901",
+    "price": "320 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/mKhch0txRJAx4puOVCLjjMbu90fbVi43.webp",
+    "location": "Чернівці, вул. Героїв Майдану, буд. 82",
+    "link": "https://lombard-centrall.com.ua/shop?page=655"
+  },
+  {
+    "id": "3960062",
+    "category": "Плойка-випрямляч",
+    "title": "Kemei",
+    "model": "KM-531",
+    "price": "250 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Одеса, вул. Фонтанська дорога  61 прим. 515",
+    "link": "https://lombard-centrall.com.ua/shop?page=750"
+  },
+  {
+    "id": "3964762",
+    "category": "Тонометр",
+    "title": "Gamma",
+    "model": "Model A",
+    "price": "250 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Героїв Майдану, буд. 82",
+    "link": "https://lombard-centrall.com.ua/shop?page=750"
+  },
+  {
+    "id": "3955162",
+    "category": "Ножиці для стрижки чагарників",
+    "title": "INTERTOOL",
+    "model": "FT-1110",
+    "price": "250 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Одеса, вул. Фонтанська дорога  61 прим. 515",
+    "link": "https://lombard-centrall.com.ua/shop?page=765"
+  },
+  {
+    "id": "3950162",
+    "category": "Мережевий зарядний пристрій",
+    "title": "Samsung",
+    "model": "+ кабель Type-C/Type-",
+    "price": "250 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/G0NN5eEm8n9MCmxqwNXtdUov7Rt8K5fy.webp",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=778"
+  },
+  {
+    "id": "3949662",
+    "category": "Машинка для стрижки",
+    "title": "RAF",
+    "model": "R-429",
+    "price": "180 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Героїв Майдану, буд. 82",
+    "link": "https://lombard-centrall.com.ua/shop?page=881"
+  },
+  {
+    "id": "3949663",
+    "category": "Машинка для стрижки",
+    "title": "RAF",
+    "model": "R-429",
+    "price": "180 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=881"
+  },
+  {
+    "id": "3937662",
+    "category": "Ваги ювелірні",
+    "title": "MATARIX",
+    "model": "MX-462/MS-1724C",
+    "price": "120 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-04/7AQyDFVfeLZf5DlxKSHycPn25bcySk6Q.webp",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=977"
+  },
+  {
+    "id": "3947362",
+    "category": "Круглогубцi",
+    "title": "INTERTOOL",
+    "model": "HT-0128",
+    "price": "120 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, вул. Горького, буд. 145а/1  (в прим. Магазину \"Ідеал\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=977"
+  },
+  {
+    "id": "3937062",
+    "category": "Бокорізи",
+    "title": "INTERTOOL",
+    "model": "HT-0143",
+    "price": "110 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=992"
+  },
+  {
+    "id": "3953363",
+    "category": "Набір свердл по металу",
+    "title": "INTERTOOL",
+    "model": "SD-0113",
+    "price": "110 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=1001"
+  },
+  {
+    "id": "3953364",
+    "category": "Набір свердл по металу",
+    "title": "INTERTOOL",
+    "model": "SD-0113",
+    "price": "110 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, пр.Шахтобудівників,6 (біля \"Аптекі Низьких Цін\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=1001"
+  },
+  {
+    "id": "3948562",
+    "category": "Ліхтар налобний",
+    "title": "INTERTOOL",
+    "model": "LB-0302",
+    "price": "90 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/storage/products/2025-03/zngy4p5fQkwqycThwYhzo9bOCfV0UZiY.webp",
+    "location": "Суми, вул. Харківська, буд. 38 (р-к \"СКД\", маг. \"Орхідея\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=1040"
+  },
+  {
+    "id": "3953362",
+    "category": "Набір свердел по бетону",
+    "title": "INTERTOOL",
+    "model": "SD-0105",
+    "price": "70 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, пр.Шахтобудівників,6 (біля \"Аптекі Низьких Цін\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=1113"
+  },
+  {
+    "id": "3953365",
+    "category": "Набір свердел по деревині",
+    "title": "INTERTOOL",
+    "model": "SD-0208",
+    "price": "65 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Павлоград, пр.Шахтобудівників,6 (біля \"Аптекі Низьких Цін\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=1141"
+  }
+]
