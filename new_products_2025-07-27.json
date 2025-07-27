@@ -1,0 +1,82 @@
+[
+  {
+    "id": "27737",
+    "category": "ТВ",
+    "title": "Samsung",
+    "model": "UE-32F4500",
+    "price": "4400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Кам'янське, вул. Глаголєва, 18/26, прим. 47,48  (зуп. \"Украина\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=26"
+  },
+  {
+    "id": "3997900",
+    "category": "Телефон",
+    "title": "Xiaomi",
+    "model": "Redmi A3 4/128GB",
+    "price": "2600 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=59"
+  },
+  {
+    "id": "3997800",
+    "category": "Телефон",
+    "title": "Xiaomi",
+    "model": "Redmi 14C 4/128GB",
+    "price": "2400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=66"
+  },
+  {
+    "id": "3997700",
+    "category": "Телефон",
+    "title": "vivo",
+    "model": "Y17 (1902) 4/128Gb",
+    "price": "1900 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=101"
+  },
+  {
+    "id": "3997102",
+    "category": "Телефон",
+    "title": "Nomi",
+    "model": "i2400 Black A",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=395"
+  },
+  {
+    "id": "3997100",
+    "category": "Телефон",
+    "title": "Nomi",
+    "model": "i2400 Black A",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=403"
+  },
+  {
+    "id": "3997101",
+    "category": "Телефон",
+    "title": "Nomi",
+    "model": "i2400 Black A",
+    "price": "550 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Чернівці, вул. Ентузиастів, 2а (маг.\"Электроник\")",
+    "link": "https://lombard-centrall.com.ua/shop?page=403"
+  },
+  {
+    "id": "3993800",
+    "category": "Утюги",
+    "title": "Singer",
+    "model": "Steamchoice 1.0",
+    "price": "400 грн\n                                    Ціна за одиницю",
+    "img": "https://lombard-centrall.com.ua/img/no-image.png",
+    "location": "Харків, майдан Захисників України,  буд. 1 «21/К»",
+    "link": "https://lombard-centrall.com.ua/shop?page=551"
+  }
+]

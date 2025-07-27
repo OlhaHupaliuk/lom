@@ -1,7 +1,8 @@
 const { Telegraf } = require("telegraf");
-const { compareByDate } = require("./compare");
+const fs = require("fs").promises;
+const path = require("path");
+const { compareJsonFiles } = require("./compare");
 const { fetchProducts } = require("./parser");
-const { connectDB } = require("./db");
 require("dotenv").config({ debug: true });
 
 const chatIds = process.env.CHAT_IDS ? process.env.CHAT_IDS.split(",") : [];
@@ -27,10 +28,11 @@ async function sendMessage(product, chatId) {
   }
 }
 
-const userAbortMap = new Map();
+const userAbortMap = new Map(); // Зберігає: chatId → active (true/false)
 
 bot.command("check", async (ctx) => {
   const chatId = ctx.chat.id.toString();
+
   if (userAbortMap.get(chatId) === true) {
     await ctx.reply(
       "⚠️ Ви вже виконуєте /check. Використайте /cancel для зупинки."
@@ -38,15 +40,23 @@ bot.command("check", async (ctx) => {
     return;
   }
 
-  userAbortMap.set(chatId, false);
+  userAbortMap.set(chatId, false); // Починаємо процес
+
   let loadingMessage;
   try {
     loadingMessage = await ctx.reply("⏳ Зачекайте...");
+
     const date = new Date().toISOString().slice(0, 10);
-    const newItemsCollection = await connectDB("new_products");
-    const newItems = await newItemsCollection
-      .find({ comparisonDate: date })
-      .toArray();
+    const filePath = path.join(__dirname, `new_products_${date}.json`);
+
+    let newItems = [];
+    try {
+      newItems = JSON.parse(await fs.readFile(filePath));
+    } catch (err) {
+      await ctx.reply("⚠️ Нові товари не знайдено");
+      userAbortMap.delete(chatId);
+      return;
+    }
 
     if (newItems.length === 0) {
       await ctx.reply("ℹ️ Нових товарів не знайдено");
@@ -81,22 +91,29 @@ bot.command("check", async (ctx) => {
 
 bot.command("compare", async (ctx) => {
   const chatId = ctx.chat.id.toString();
+
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
+
   const format = (d) => d.toISOString().slice(0, 10);
-  const date1 = format(yesterday);
-  const date2 = format(today);
+  const file1 = `products_${format(yesterday)}.json`;
+  const file2 = `products_${format(today)}.json`;
 
   let loadingMessage;
   try {
     loadingMessage = await ctx.reply("⏳ Порівнюємо товари...");
-    const newItems = await compareByDate(date1, date2);
+    const newItems = await compareJsonFiles(
+      path.join(__dirname, file1),
+      path.join(__dirname, file2)
+    );
+
     if (newItems.length === 0) {
       await ctx.reply("ℹ️ Нових товарів не знайдено");
     } else {
       await ctx.reply(`📢 Знайдено ${newItems.length} нових товарів`);
     }
+
     await ctx.telegram.deleteMessage(chatId, loadingMessage.message_id);
   } catch (err) {
     if (loadingMessage) {
@@ -107,13 +124,6 @@ bot.command("compare", async (ctx) => {
     await ctx.reply("❌ Помилка: " + err.message);
   }
 });
-
-bot.command("cancel", async (ctx) => {
-  const chatId = ctx.chat.id.toString();
-  userAbortMap.set(chatId, true);
-  await ctx.reply("✅ Операцію буде скасовано.");
-});
-
 bot.on("polling_error", (err) => {
   console.error("[Bot] Telegraf polling error:", err.message);
 });
@@ -132,8 +142,10 @@ bot.action("run_parser", async (ctx) => {
   try {
     await ctx.answerCbQuery("🔄 Запуск парсера...");
     await ctx.reply("⏳ Парсинг почався, чекайте...");
+
     await fetchProducts();
-    await ctx.reply("✅ Парсинг завершено.");
+
+    await ctx.reply("✅ Парсинг завершено, новий файл збережено.");
   } catch (err) {
     await ctx.reply("❌ Помилка під час парсингу: " + err.message);
   }
@@ -147,6 +159,7 @@ bot
     process.exit(1);
   });
 
+// Створення веб-сервера
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
